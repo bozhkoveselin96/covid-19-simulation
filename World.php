@@ -1,8 +1,12 @@
 <?php
 
+
 class World {
+    /** @var int $rows */
     private $rows;
+    /** @var int $columns */
     private $columns;
+    /** @var array $humanity */
     private $humanity = [];
 
     public function __construct(int $rows, int $cols) {
@@ -10,7 +14,7 @@ class World {
         $this->columns = $cols;
     }
 
-    public function create() {
+    public function create(): void {
         for ($row = 0; $row < $this->rows; $row++) {
             for ($column = 0; $column < $this->columns; $column++) {
                 $this->humanity[$row][$column] = new Human($row, $column);
@@ -18,24 +22,24 @@ class World {
         }
     }
 
-    public function insertFirstInfected(int $x_coordinate, int $y_coordinate) {
+    public function insertFirstInfected(int $x_coordinate, int $y_coordinate): void {
         /* @var Human $human */
         $infected_human_id = "$x_coordinate" . "$y_coordinate";
         $human = $this->findHuman($infected_human_id);
         if ($human !== null) {
-            $human->setDays($human->getDays() + 1);
-            $human->setStatus('infected');
+            $human->setDays($human->getDays() + ONE_DAY);
+            $human->setStatus(INFECTED_HUMAN);
         }
     }
 
-    public function infectNextHuman() {
+    public function infectNextHuman(): void {
         /* @var Human $human */
         foreach ($this->humanity as $humans) {
             foreach ($humans as $human) {
-                if ($human->getDays() == 3) {
-                    $human->setStatus('cured');
+                if ($human->getDays() == NECESSARY_DAYS_FOR_RECOVERY) {
+                    $human->setStatus(CURED_HUMAN);
                 }
-                if ($human->getStatus() == 'infected' && $human->getDays() > 0) {
+                if ($human->getStatus() == INFECTED_HUMAN && $human->getDays() > DAYS_OF_A_HEALTHY_PERSON) {
                     $infected_human_id = str_split($human->getId());
                     $x = $infected_human_id[0];
                     $y = $infected_human_id[1];
@@ -44,18 +48,18 @@ class World {
                     $left = strval($x . ($y - 1));
                     $bottom = strval(($x + 1) . $y);
 
-                    if ($this->findHuman($right) !== null && $this->findHuman($right)->getStatus() == 'uninfected') {
+                    if ($this->findHuman($right) !== null && $this->findHuman($right)->getStatus() == UNINFECTED_HUMAN) {
                         $right_human = $this->findHuman($right);
-                        $right_human->setStatus('infected');
-                    } elseif ($this->findHuman($top) !== null && $this->findHuman($top)->getStatus() == 'uninfected') {
+                        $right_human->setStatus(INFECTED_HUMAN);
+                    } elseif ($this->findHuman($top) !== null && $this->findHuman($top)->getStatus() == UNINFECTED_HUMAN) {
                         $top_human = $this->findHuman($top);
-                        $top_human->setStatus('infected');
-                    } elseif ($this->findHuman($left) !== null && $this->findHuman($left)->getStatus() == 'uninfected') {
+                        $top_human->setStatus(INFECTED_HUMAN);
+                    } elseif ($this->findHuman($left) !== null && $this->findHuman($left)->getStatus() == UNINFECTED_HUMAN) {
                         $left_human = $this->findHuman($left);
-                        $left_human->setStatus('infected');
-                    } elseif ($this->findHuman($bottom) !== null && $this->findHuman($bottom)->getStatus() == 'uninfected') {
+                        $left_human->setStatus(INFECTED_HUMAN);
+                    } elseif ($this->findHuman($bottom) !== null && $this->findHuman($bottom)->getStatus() == UNINFECTED_HUMAN) {
                         $bottom_human = $this->findHuman($bottom);
-                        $bottom_human->setStatus('infected');
+                        $bottom_human->setStatus(INFECTED_HUMAN);
                     }
                 }
             }
@@ -63,7 +67,7 @@ class World {
         $this->increaseDays();
     }
 
-    private function findHuman($id) {
+    private function findHuman(string $id) {
         /* @var Human $human */
         foreach ($this->humanity as $humans) {
             foreach ($humans as $human) {
@@ -75,32 +79,32 @@ class World {
         return null;
     }
 
-    private function increaseDays () {
+    private function increaseDays (): void {
         /* @var Human $human */
         foreach ($this->humanity as $humans) {
             foreach ($humans as $human) {
-                if ($human->getStatus() == 'infected') {
-                    $human->setDays($human->getDays() + 1);
+                if ($human->getStatus() == INFECTED_HUMAN) {
+                    $human->setDays($human->getDays() + ONE_DAY);
                 }
             }
         }
     }
 
-    public function view(int $day) {
+    public function view(int $day): array {
         $humanity_response = [];
         foreach ($this->humanity as $row => $people_in_row) {
             $humanity_response[$day][$row] = [];
             foreach ($people_in_row as $human) {
                 /* @var Human $human */
                 switch ($human->getStatus()) {
-                    case 'uninfected':
-                        array_push($humanity_response[$day][$row], 'uninfected');
+                    case UNINFECTED_HUMAN:
+                        array_push($humanity_response[$day][$row], UNINFECTED_HUMAN);
                         break;
-                    case 'infected':
-                        array_push($humanity_response[$day][$row], 'infected');
+                    case INFECTED_HUMAN:
+                        array_push($humanity_response[$day][$row], INFECTED_HUMAN);
                         break;
-                    case 'cured':
-                        array_push($humanity_response[$day][$row], 'cured');
+                    case CURED_HUMAN:
+                        array_push($humanity_response[$day][$row], CURED_HUMAN);
                         break;
                 }
             }
