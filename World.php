@@ -8,6 +8,8 @@ class World {
     private $columns;
     /** @var array $humanity */
     private $humanity = [];
+    /** @var array $humanity_response */
+    public $humanity_response = [];
 
     public function __construct(int $rows, int $cols) {
         $this->rows = $rows;
@@ -41,24 +43,29 @@ class World {
                 }
                 if ($human->getStatus() == INFECTED_HUMAN && $human->getDays() > DAYS_OF_A_HEALTHY_PERSON) {
                     $infected_human_id = str_split($human->getId());
+                    // Actually x and y are the coordinates of the infected person in the matrix(the world).
                     $x = $infected_human_id[0];
                     $y = $infected_human_id[1];
+                    // On the right, top, left, and bottom are actually
+                    // the identification numbers of the person on the right,
+                    // the person on top, the person on the left,
+                    // and the person below the infected person
                     $right = strval($x . ($y + 1));
-                    $top = strval(($x - 1) . $y);
+                    $over = strval(($x - 1) . $y);
                     $left = strval($x . ($y - 1));
-                    $bottom = strval(($x + 1) . $y);
+                    $under = strval(($x + 1) . $y);
 
                     if ($this->findHuman($right) !== null && $this->findHuman($right)->getStatus() == UNINFECTED_HUMAN) {
                         $right_human = $this->findHuman($right);
                         $right_human->setStatus(INFECTED_HUMAN);
-                    } elseif ($this->findHuman($top) !== null && $this->findHuman($top)->getStatus() == UNINFECTED_HUMAN) {
-                        $top_human = $this->findHuman($top);
+                    } elseif ($this->findHuman($over) !== null && $this->findHuman($over)->getStatus() == UNINFECTED_HUMAN) {
+                        $top_human = $this->findHuman($over);
                         $top_human->setStatus(INFECTED_HUMAN);
                     } elseif ($this->findHuman($left) !== null && $this->findHuman($left)->getStatus() == UNINFECTED_HUMAN) {
                         $left_human = $this->findHuman($left);
                         $left_human->setStatus(INFECTED_HUMAN);
-                    } elseif ($this->findHuman($bottom) !== null && $this->findHuman($bottom)->getStatus() == UNINFECTED_HUMAN) {
-                        $bottom_human = $this->findHuman($bottom);
+                    } elseif ($this->findHuman($under) !== null && $this->findHuman($under)->getStatus() == UNINFECTED_HUMAN) {
+                        $bottom_human = $this->findHuman($under);
                         $bottom_human->setStatus(INFECTED_HUMAN);
                     }
                 }
@@ -90,25 +97,24 @@ class World {
         }
     }
 
-    public function view(int $day): array {
-        $humanity_response = [];
+    public function getResultForTheCurrentDay(int $day): array {
         foreach ($this->humanity as $row => $people_in_row) {
-            $humanity_response[$day][$row] = [];
+            $this->humanity_response[$day][$row] = [];
             foreach ($people_in_row as $human) {
                 /* @var Human $human */
                 switch ($human->getStatus()) {
                     case UNINFECTED_HUMAN:
-                        array_push($humanity_response[$day][$row], UNINFECTED_HUMAN);
+                        array_push($this->humanity_response[$day][$row], UNINFECTED_HUMAN);
                         break;
                     case INFECTED_HUMAN:
-                        array_push($humanity_response[$day][$row], INFECTED_HUMAN);
+                        array_push($this->humanity_response[$day][$row], INFECTED_HUMAN);
                         break;
                     case CURED_HUMAN:
-                        array_push($humanity_response[$day][$row], CURED_HUMAN);
+                        array_push($this->humanity_response[$day][$row], CURED_HUMAN);
                         break;
                 }
             }
         }
-        return $humanity_response[$day];
+        return $this->humanity_response[$day];
     }
 }
