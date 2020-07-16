@@ -1,7 +1,7 @@
 <?php
 
 
-class World {
+class WorldController {
     /** @var int $rows */
     private $rows;
     /** @var int $columns */
@@ -46,10 +46,9 @@ class World {
                     // Actually x and y are the coordinates of the infected person in the matrix(the world).
                     $x = $infected_human_id[0];
                     $y = $infected_human_id[1];
-                    // On the right, top, left, and bottom are actually
-                    // the identification numbers of the person on the right,
-                    // the person on top, the person on the left,
-                    // and the person below the infected person
+                    // right, over, left, and under are actually the identification numbers
+                    // of the person on the right, the person on over, the person on the left,
+                    // and the person under the infected person
                     $right = strval($x . ($y + 1));
                     $over = strval(($x - 1) . $y);
                     $left = strval($x . ($y - 1));

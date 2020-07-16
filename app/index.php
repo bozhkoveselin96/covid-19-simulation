@@ -1,12 +1,12 @@
 <?php
-require_once 'World.php';
-require_once 'Human.php';
+require_once 'controller\WorldController.php';
+require_once 'model\Human.php';
 require_once 'defines.php';
 
 $request = file_get_contents('php://input');
 $data_json = json_decode($request);
 
-$world = new World(DEFAULT_ROWS,DEFAULT_COLUMNS);
+$world = new WorldController(DEFAULT_ROWS,DEFAULT_COLUMNS);
 $world->create();
 $simulation = [];
 for ($day = 0; $day <= $data_json->days; $day++) {
