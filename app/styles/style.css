@@ -1,0 +1,9 @@
+.uninfected {
+    color: deepskyblue;
+}
+.infected {
+    color: red;
+}
+.cured {
+    color: green;
+}
