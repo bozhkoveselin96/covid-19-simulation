@@ -1,9 +1,68 @@
+
+body {
+    background-color: azure;
+}
+
 .uninfected {
     color: deepskyblue;
 }
+
 .infected {
     color: red;
 }
+
 .cured {
     color: green;
+}
+
+.block {
+    display: block;
+}
+
+.none {
+    display: none;
+}
+
+#form-simulation {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 500px;
+    margin: auto;
+}
+
+#start-simulation, #days, #new-simulation{
+    margin: auto;
+    width: 100px;
+}
+
+#start-simulation {
+    margin-top: 10px;
+}
+
+#world {
+    width: 310px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: auto;
+}
+
+.fa {
+    font-size: xx-large;
+}
+
+h1 {
+    text-align: center;
+}
+
+h5 {
+    width: 310px;
+    text-align: center
+}
+
+p {
+    width: 310px;
+    margin: 0;
+    text-align: center;
 }

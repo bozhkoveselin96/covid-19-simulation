@@ -8,8 +8,15 @@
         <title>Title</title>
     </head>
     <body>
-        <input type="number" id="days">
-        <button onclick="createSimulation()">test</button>
+        <div id="window" class="block">
+            <div id="form-simulation">
+                <h1>Enter an integer for the number of days of the simulation.</h1>
+                <input type="number" id="days">
+                <button id="start-simulation" onclick="getDataFromBackend()">Start simulation</button>
+            </div>
+        </div>
+        <h1 id="message" class="none">You can now track how the virus is spreading.</h1>
+        <button id="new-simulation" class="none" onclick="createNewSimulation()">New simulation</button>
         <div id="world" class="fa"></div>
     </body>
 </html>
