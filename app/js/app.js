@@ -1,7 +1,7 @@
 
 function getDataFromBackend() {
     let days = document.getElementById('days').value;
-    if (days >= 1) {
+    if (true) {
         let request_data = {days: days};
         let xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function () {
@@ -11,6 +11,20 @@ function getDataFromBackend() {
                 document.getElementById('window').className = 'none';
                 document.getElementById('message').className = 'block';
                 document.getElementById('new-simulation').className = 'block';
+            } else if (this.readyState === 4 && this.status === 400) {
+                const error = JSON.parse(this.response);
+                console.log(error.message);
+
+                let modal = document.getElementById('my-modal');
+                let ok_button = document.getElementsByClassName("ok")[0];
+                let message = document.getElementById('modal-message');
+
+                modal.style.display = 'block';
+                message.appendChild(document.createTextNode(error.message));
+                ok_button.onclick = function() {
+                    modal.style.display = "none";
+                    message.innerHTML = '';
+                }
             }
         };
         xmlhttp.open("POST", "index.php", true);
@@ -59,14 +73,13 @@ function createSimulation(humanity) {
                 }
             }
             output_HTML += '</tr>';
-        };
+        }
         output_HTML += '</table>';
         output_HTML +=  '<p class="cured">' + 'cured - ' + statistics['cured'] + '</p>';
         output_HTML +=  '<p class="infected">' + 'infected - ' + statistics['infected'] + '</p>';
         output_HTML +=  '<p class="uninfected">' + 'uninfected - ' + statistics['uninfected'] + '</p>';
         output_HTML += '</br>';
         next_day++;
-        console.log(statistics);
         document.getElementById('world').innerHTML = output_HTML;
     }
 }
