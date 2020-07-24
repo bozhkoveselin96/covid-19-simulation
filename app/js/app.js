@@ -43,10 +43,16 @@ function createSimulation(humanity) {
         statistics['uninfected'] = 0;
         statistics['infected'] = 0;
         statistics['cured'] = 0;
-        if (next_day === 0) {
-            output_HTML += '<h5>' + 'Тhe day before the virus.' + '</h5>';
-        } else {
-            output_HTML += '<h5>' + 'Day ' + next_day + '</h5>';
+
+        switch (next_day) {
+            case 0:
+                output_HTML += '<h5>' + '</br>' + 'Тhe day before the virus.' + '</br>' + '</h5>';
+                break;
+            case 1:
+                output_HTML += '<h5>' + 'Day ' + next_day + '</br>' + 'Placing the first infected.' + '</h5>';
+                break;
+            default:
+                output_HTML += '<h5>' + '</br>' + 'Day ' + next_day + '</br>' + '</h5>';
         }
         output_HTML += '<table>';
         for (let row of day) {
@@ -96,6 +102,7 @@ function slideshowDays(days) {
         if(day === days) {
             clearInterval(next);
             document.getElementById('new-simulation').className = 'block';
+            document.getElementById('message').className = 'none';
         }
     }, 2000);
 }
