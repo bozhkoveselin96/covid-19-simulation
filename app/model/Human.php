@@ -1,15 +1,12 @@
 <?php
 
 class Human {
-    /** @var int $id */
     private $id;
-    /** @var string $status */
     private $status;
-    /** @var int $days */
     private $days;
 
-    public function __construct($x_coordinate, $y_coordinate, $status = UNINFECTED_HUMAN, $days = DAYS_OF_A_HEALTHY_PERSON) {
-        $this->id = "$x_coordinate" . "$y_coordinate";
+    public function __construct($xCoordinate, $yCoordinate, $status = UNINFECTED_HUMAN, $days = DAYS_OF_A_HEALTHY_PERSON) {
+        $this->id = "$xCoordinate" . "$yCoordinate";
         $this->status = $status;
         $this->days = $days;
     }

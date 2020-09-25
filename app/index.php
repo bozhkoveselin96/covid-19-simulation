@@ -4,13 +4,13 @@ require_once 'model\Human.php';
 require_once 'defines.php';
 
 $request = file_get_contents('php://input');
-$data_json = json_decode($request);
+$dataJson = json_decode($request);
 
-if ($data_json->days > ONE_DAY) {
+if ($dataJson->days > ONE_DAY) {
     $world = new WorldController(DEFAULT_ROWS, DEFAULT_COLUMNS);
     $world->create();
     $simulation = [];
-    for ($day = 0; $day <= $data_json->days; $day++) {
+    for ($day = 0; $day <= $dataJson->days; $day++) {
         switch ($day) {
             case FIRST_DAY:
                 $world->insertFirstInfected(rand(0, 9), rand(0, 9));
