@@ -6,7 +6,7 @@ require_once 'defines.php';
 $request = file_get_contents('php://input');
 $dataJson = json_decode($request);
 
-if ($dataJson->days > ONE_DAY) {
+if ($dataJson->days > ONE_DAY && $dataJson->days < MAX_DAYS) {
     $world = new WorldController(DEFAULT_ROWS, DEFAULT_COLUMNS);
     $world->create();
     $simulation = [];
@@ -22,7 +22,7 @@ if ($dataJson->days > ONE_DAY) {
     }
     echo json_encode($simulation);
 } else {
-    echo json_encode(['message' => 'The day must be a number greater than 0!']);
+    echo json_encode(['message' => 'The day must be a number between 1 and 99   !']);
     http_response_code(400);
 }
 

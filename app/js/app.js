@@ -60,20 +60,20 @@ function createSimulation(humanity) {
                 switch (column) {
                     case 'u':
                         const divUninfected = '<div class="uninfected">';
-                        const uninfectedPerson = document.getElementsByClassName('uninfected');
-                        outputHTML = createColumnWithEmoji(outputHTML, divUninfected, uninfectedPerson, 'uninfected', "&#xf11a;");
+                        const uninfectedHuman = document.getElementsByClassName('uninfected');
+                        outputHTML = createColumnWithEmoji(outputHTML, divUninfected, uninfectedHuman, 'uninfected', "&#xf11a;");
                         statistics['uninfected']++;
                         break;
                     case 'i':
                         const divInfected = '<div class="infected">';
-                        const infectedPerson = document.getElementsByClassName('infected');
-                        outputHTML = createColumnWithEmoji(outputHTML, divInfected, infectedPerson, 'infected', "&#xf119;");
+                        const infectedHuman = document.getElementsByClassName('infected');
+                        outputHTML = createColumnWithEmoji(outputHTML, divInfected, infectedHuman, 'infected', "&#xf119;");
                         statistics['infected']++;
                         break;
                     case 'c':
                         let divCured = '<div class="cured">';
-                        let curedPerson = document.getElementsByClassName('cured');
-                        outputHTML = createColumnWithEmoji(outputHTML, divCured, curedPerson, 'cured', "&#xf118;");
+                        let curedHuman = document.getElementsByClassName('cured');
+                        outputHTML = createColumnWithEmoji(outputHTML, divCured, curedHuman, 'cured', "&#xf118;");
                         statistics['cured']++;
                         break;
                 }
@@ -81,7 +81,7 @@ function createSimulation(humanity) {
             outputHTML += '</tr>';
         }
         outputHTML += '</table>';
-        outputHTML += '<p class="cured">' + 'cured - ' + statistics['cured'] + '</p>';
+        outputHTML += '<p class="cured" id="cured-for-' + nextDay + '-day">' + 'cured - ' + statistics['cured'] + '</p>';
         outputHTML += '<p class="infected">' + 'infected - ' + statistics['infected'] + '</p>';
         outputHTML += '<p class="uninfected">' + 'uninfected - ' + statistics['uninfected'] + '</p>';
         document.getElementById(`${nextDay}`).innerHTML = outputHTML;
@@ -92,25 +92,33 @@ function createSimulation(humanity) {
 
 function slideshowDays(days) {
     let day = 0;
-    let next = setInterval(function(){
+    const next = setInterval(function () {
         if (day > 0) {
             document.getElementById(`${day - 1}`).className = 'none';
         }
-        document.getElementById(`${day}`).className = 'fa block';
-        day++;
-        if(day === days) {
+        const curredForPreviousDay = document.getElementById(`cured-for-${day}-day`).innerHTML;
+        if (curredForPreviousDay === 'cured - 100') {
             clearInterval(next);
             document.getElementById('new-simulation').className = 'block';
-            document.getElementById('message').className = 'none';
+            document.getElementById('message').innerText = 'All people are cured!';
+            document.getElementById(`${day}`).className = 'fa block';
+        } else {
+            document.getElementById(`${day}`).className = 'fa block';
+            day++;
+            if (day === days) {
+                clearInterval(next);
+                document.getElementById('new-simulation').className = 'block';
+                document.getElementById('message').className = 'none';
+            }
         }
-    }, 2000);
+    }, 1500);
 }
 
-function createColumnWithEmoji(html, divWithClass, person, status, emojiCode) {
+function createColumnWithEmoji(html, divWithClass, human, status, emojiCode) {
     html += '<td>';
     html += divWithClass;
-    person = emojiCode;
-    html += person;
+    human = emojiCode;
+    html += human;
     html += '</div>';
     html += '</td>';
     return html;
@@ -125,5 +133,6 @@ function createNewSimulation() {
     document.getElementById('new-simulation').className = 'none';
     document.getElementById('message').className = 'none';
     document.getElementById('days').value = '';
+    document.getElementById('message').innerText = 'You can now track how the virus is spreading.';
 }
 
