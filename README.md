@@ -1,14 +1,25 @@
-# Description of the simulation.
-#### By default we have a matrix (world) 10x10, with 100 people.
-#### Аt the beginning you have a form for entering the number of days of the simulation.
-#### Once the simulation begins, the day before the first infected person is released (day 0), all people (100) are healthy.
-#### The first day (day 1) the first infected person is randomly placed in the matrix (world).
-#### Each infected person can infect only one person per day and the priority is as follows:
-- to the right of the infected;
-- over the infected;
-- to the left of the infected;
-- bellow the infected;
+# Simulation Description
 
-#### On the day a person is infected, he cannot infect anyone 
-#### The infected recover after 3 days and can no longer be infected
+This simulation revolves around a default matrix (world) with dimensions 10x10, populated by 100 individuals.
+Initialization
 
+At the outset, a form allows you to input the duration of the simulation in days.
+
+- `Day 0` - On `day 0`, just before the first infected person is introduced, all **100** individuals are in good health.
+
+- `Day 1` - The simulation begins with the introduction of the first infected person, randomly placed within the matrix (world).
+
+Infection Dynamics
+Each infected person can transmit the infection to only one person per day.
+
+Transmission priority is as follows:
+- To the right of the infected
+- Over the infected
+- To the left of the infected
+- Below the infected
+
+Infection Rules
+- On the day a person is infected, they cannot further infect anyone.
+- Infected individuals recover after 3 days and become immune to further infection.
+
+This simulation offers an intriguing exploration of infection dynamics within a confined matrix. Feel free to experiment with the simulation parameters and observe the spread and recovery patterns.
